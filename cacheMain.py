@@ -7,7 +7,7 @@ from pathlib import Path
 import sounddevice as sd
 import soundfile as sf
 from collections import defaultdict
-import edge_tts  # Import the edge-tts library for text-to-speech
+import edge_tts 
 import asyncio
 import vlc
 from pytube import YouTube
@@ -22,47 +22,6 @@ speaker = win32com.client.Dispatch("SAPI.SpVoice")
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 intro = "Hello, I am Haku. How can I help you?"
 print(intro)
-
-
-# # Function to search YouTube using yt-dlp
-# def search_youtube(query):
-#     """Search for a YouTube video based on a query (artist and song name)."""
-#     ydl_opts = {
-#         'format': 'bestaudio/best',
-#         'noplaylist': True,  # Only play a single video
-#         'default_search': 'ytsearch1',  # Search and return the first result
-#         'quiet': True
-#     }
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         result = ydl.extract_info(query, download=False)
-#         if 'entries' in result:
-#             video = result['entries'][0]  # Get the first result
-#         else:
-#             video = result
-#         return video['webpage_url']
-
-# # Function to download and play YouTube audio using VLC
-# def play_youtube_audio(url):
-#     """Plays the audio of a YouTube video from the URL."""
-#     ydl_opts = {
-#         'format': 'bestaudio/best',
-#         'quiet': True,
-#         'postprocessors': [{
-#             'key': 'FFmpegExtractAudio',
-#             'preferredcodec': 'mp3',
-#             'preferredquality': '192',
-#         }],
-#         'outtmpl': 'song.mp3',
-#     }
-
-#     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-#         ydl.download([url])  # Download the audio
-
-#     # Play the audio file
-#     player = vlc.MediaPlayer("song.mp3")
-#     player.play()
-#     while player.is_playing():
-#         pass
 
 # Initialize edge-tts synthesizer
 async def synthesize_speech(text, output_file):
@@ -141,30 +100,6 @@ def process_command(recognizer, microphone):
         try:
             prompt = recognizer.recognize_google(audio, language="en-in")
             print("Command detected:", prompt)
-
-
-        #     # Check if the command contains a song request
-        #     if "play" in prompt.lower():
-        #         # Extract artist and song name from the prompt (basic parsing)
-        #         song_request = prompt.lower().replace("play", "").strip()
-        #         print(f"Searching for: {song_request} on YouTube")
-
-        #         # Search YouTube for the song
-        #         youtube_url = search_youtube(song_request)
-        #         print(f"Found YouTube URL: {youtube_url}")
-
-        #         # Download and play the audio
-        #         play_youtube_audio(youtube_url)
-        #     else:
-        #         # Get response from cache or other logic
-        #         response = get_cached_response(prompt)
-        #         print("Response:", response)
-        #         asyncio.run(synthesize_speech(response, str("response_speech.mp3")))
-
-        # except sr.UnknownValueError:
-        #     asyncio.run(synthesize_speech("Google Speech Recognition could not understand the audio", str("error_speech.mp3")))
-        # except sr.RequestError as e:
-        #     asyncio.run(synthesize_speech(f"Could not request results from Google Speech Recognition service; {e}", str("error_speech.mp3")))
 
             
             # Get response from cache or OpenAI
